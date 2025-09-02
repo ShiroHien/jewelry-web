@@ -9,23 +9,25 @@ const seedAdmin = async () => {
     await connectDB();
 
     try {
-        const adminUsername = process.env.ADMIN_USERNAME;
+        const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
-        if (!adminUsername || !adminPassword) {
-            console.error('Please provide ADMIN_USERNAME and ADMIN_PASSWORD in your .env file');
+        if (!adminEmail || !adminPassword) {
+            console.error('Please provide ADMIN_EMAIL and ADMIN_PASSWORD in your .env file');
             (process as any).exit(1);
         }
 
-        const adminExists = await User.findOne({ username: adminUsername });
+        const adminExists = await User.findOne({ email: adminEmail });
 
         if (adminExists) {
-            console.log('Admin user already exists.');
+            adminExists.password = adminPassword;
+            await adminExists.save();
+            console.log('Admin user password updated.');
             return;
         }
 
         const admin = new User({
-            username: adminUsername,
+            email: adminEmail,
             password: adminPassword,
         });
 
