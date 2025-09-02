@@ -3,15 +3,13 @@ import bcrypt from 'bcryptjs';
 
 export interface IUser extends Document {
   email: string;
-  username: string;
   password?: string; // Optional because we don't return it in responses
   comparePassword(password: string): Promise<boolean>;
 }
 
 const UserSchema: Schema = new Schema({
-  username: { type: String, required: true, unique: true, lowercase: true }, // Add this line
-  // email: { type: String, unique: true, lowercase: true }, // Make email optional if you want
-  password: { type: String, required: true, select: false },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true, select: false }, // `select: false` prevents password from being sent in queries by default
 });
 
 // Hash password before saving
