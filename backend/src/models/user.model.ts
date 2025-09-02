@@ -10,7 +10,7 @@ export interface IUser extends Document {
 
 const UserSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true, lowercase: true }, // Add this line
-  email: { type: String, unique: true, lowercase: true }, // Make email optional if you want
+  // email: { type: String, unique: true, lowercase: true }, // Make email optional if you want
   password: { type: String, required: true, select: false },
 });
 
