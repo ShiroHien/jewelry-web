@@ -6,12 +6,15 @@ import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
 import blogRoutes from './routes/blog.routes';
 import uploadRoutes from './routes/upload.routes';
+import seedAdmin from './seed'; // Add this import
 
 // Load environment variables from .env file
 dotenv.config();
 
 // Connect to Database
-connectDB();
+connectDB().then(() => {
+  seedAdmin(); // Run the seed script
+});
 
 const app = express();
 const port = process.env.PORT || 3001;

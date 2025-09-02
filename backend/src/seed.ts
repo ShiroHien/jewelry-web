@@ -4,7 +4,7 @@ import User from './models/user.model';
 import connectDB from './config/db';
 
 dotenv.config();
- 
+
 const seedAdmin = async () => {
     await connectDB();
 
@@ -14,13 +14,13 @@ const seedAdmin = async () => {
 
         if (!adminEmail || !adminPassword) {
             console.error('Please provide ADMIN_EMAIL and ADMIN_PASSWORD in your .env file');
-            (process as any).exit(1);
+            return;
         }
 
         const adminExists = await User.findOne({ email: adminEmail });
 
         if (adminExists) {
-            adminExists.password = adminPassword;
+            adminExists.set({ password: adminPassword }); // ensures isModified is true
             await adminExists.save();
             console.log('Admin user password updated.');
             return;
@@ -36,11 +36,15 @@ const seedAdmin = async () => {
 
     } catch (error) {
         console.error('Error seeding admin user:', error);
-        (process as any).exit(1);
-    } finally {
-        await mongoose.disconnect();
-        console.log('MongoDB disconnected.');
     }
 };
 
-seedAdmin();
+// Only disconnect if run directly (not imported)
+if (require.main === module) {
+    seedAdmin().finally(() => {
+        mongoose.disconnect();
+        console.log('MongoDB disconnected.');
+    });
+}
+
+export default seedAdmin;
