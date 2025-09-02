@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import connectDB from './config/db';
 import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
@@ -16,12 +16,14 @@ connectDB().then(() => {
   seedAdmin(); // Run the seed script
 });
 
-const app = express();
+const app: Express = express();
 const port = process.env.PORT || 3001;
 
 // Middlewares
 app.use(cors({
-  origin: ['https://klora-jewelry.vercel.app/', 'http://localhost:5173'], // add your Vercel domain
+  origin: (origin, callback) => {
+    callback(null, true); // Allow all origins for now
+  },
   credentials: true,
 })); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // To parse JSON bodies
