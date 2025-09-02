@@ -18,7 +18,7 @@ const port = process.env.PORT || 3001;
 
 // Middlewares
 app.use(cors({
-  origin: ['https://your-frontend-url.vercel.app', 'http://localhost:5173'], // add your Vercel domain
+  origin: ['https://klora-jewelry.vercel.app/', 'http://localhost:5173'], // add your Vercel domain
   credentials: true,
 })); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // To parse JSON bodies
