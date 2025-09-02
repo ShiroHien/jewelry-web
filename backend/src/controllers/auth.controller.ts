@@ -11,10 +11,10 @@ if (!JWT_SECRET) {
 }
 
 export const login = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ username }).select('+password');
 
         if (!user || !user.password) {
             return res.status(401).json({ message: 'Invalid credentials' });

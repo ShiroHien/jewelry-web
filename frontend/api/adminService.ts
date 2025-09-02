@@ -15,7 +15,7 @@ const getAuthHeaders = () => {
 };
 
 // Auth
-export const login = async (credentials: { email: string; password: string; }) => {
+export const login = async (credentials: { username: string; password: string; }) => {
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
