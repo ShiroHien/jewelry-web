@@ -4,7 +4,7 @@ import User from './models/user.model';
 import connectDB from './config/db';
 
 dotenv.config();
-
+ 
 const seedAdmin = async () => {
     await connectDB();
 
