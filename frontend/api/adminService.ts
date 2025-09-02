@@ -1,6 +1,6 @@
 import { Product, BlogPost } from '../types';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 // Helper to get the auth token from localStorage
 const getAuthToken = () => localStorage.getItem('authToken');
