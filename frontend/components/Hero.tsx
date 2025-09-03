@@ -19,9 +19,9 @@ const Hero: React.FC = () => {
 
       <div className="container mx-auto px-6">
         <div className="relative z-10 max-w-2xl text-left">
-          <h1 className="text-5xl md:text-7xl lg:text-7xl font-serif-display text-gray-900 mb-4 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>
+          <h1 className="text-5xl md:text-7xl lg:text-7xl font-serif-display text-gray-900 mb-8 leading-tight" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>
             KLORA: 
-            <div>Vẻ Đẹp Vĩnh Cửu</div>
+            <div className="mt-2">Vẻ Đẹp Vĩnh Cửu</div>
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-xl">
             Khám phá những món trang sức được chế tác tỉ mỉ, vượt thời gian. Mỗi tác phẩm là một minh chứng cho sự thanh lịch và mang trong mình một câu chuyện riêng.
