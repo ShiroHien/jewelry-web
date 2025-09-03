@@ -38,12 +38,14 @@ const getClassicalStyles = async (): Promise<ClassicalStyle[]> => {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ image, title, description, link }) => {
   return (
-    <div className="group relative overflow-hidden text-white aspect-[4/5]">
-      <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-      <div className="absolute inset-0 bg-black/50 p-8 flex flex-col justify-end">
-        <h3 className="text-3xl font-serif-display font-bold mb-2">{title}</h3>
-        <p className="text-gray-300 mb-4">{description}</p>
-        <Link to={link} className="font-bold uppercase tracking-widest text-sm self-start border-b-2 border-transparent hover:border-white transition-all duration-300">
+    <div className="group relative overflow-hidden text-black">
+      <div className="h-75 overflow-hidden"> 
+        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+      </div>
+      <div className="bg-white flex flex-col justify-start pt-6"> 
+        <h3 className="text-3xl font-serif-display mb-2">{title}</h3>
+        <p className="text-gray-700 mb-4">{description}</p>
+        <Link to={link} className="font-bold uppercase tracking-widest text-sm self-start border-b-2 border-transparent hover:border-black transition-all duration-300">
           Khám Phá
         </Link>
       </div>

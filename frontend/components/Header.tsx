@@ -37,7 +37,7 @@ const Header: React.FC = () => {
           </Link>
           <nav className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link key={link.name} to={link.path} className="relative group text-sm uppercase tracking-widest text-black py-1">
+              <Link key={link.name} to={link.path} className="relative group text-base uppercase tracking-widest text-black py-1">
                 {link.name}
                 <span className="absolute inset-x-0 bottom-0 h-[1px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-center"></span>
               </Link>
