@@ -81,7 +81,7 @@ const BlogEditPage: React.FC = () => {
     }
   };
   
-  if (loading) return <div>Loading blog post...</div>;
+  if (loading) return <div>Đang tải bài viết...</div>;
 
   return (
     <div className="container mx-auto">
@@ -89,20 +89,20 @@ const BlogEditPage: React.FC = () => {
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md space-y-6">
         
         <div>
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <label className="block text-sm font-medium text-gray-700">Tiêu đề</label>
           <input type="text" name="title" value={formData.title} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700">Cover Image</label>
+          <label className="block text-sm font-medium text-gray-700">Ảnh bìa</label>
           {formData.coverImage && <img src={formData.coverImage} alt="Cover" className="w-48 h-auto my-2 rounded-md"/>}
           <input type="file" onChange={handleImageUpload} disabled={isUploading} className="text-sm"/>
-          {isUploading && <p className="text-sm text-gray-500 mt-1">Uploading...</p>}
+          {isUploading && <p className="text-sm text-gray-500 mt-1">Đang tải...</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label className="block text-sm font-medium text-gray-700">Author</label>
+                <label className="block text-sm font-medium text-gray-700">Tác giả</label>
                 <input type="text" name="author" value={formData.author} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required />
             </div>
             <div>
@@ -112,13 +112,13 @@ const BlogEditPage: React.FC = () => {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700">Content</label>
+          <label className="block text-sm font-medium text-gray-700">Nội dung</label>
           <textarea name="content" value={formData.content} onChange={handleChange} rows={15} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required />
         </div>
         
         <div className="flex justify-end">
-            <button type="button" onClick={() => navigate('/admin/blog')} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Cancel</button>
-            <button type="submit" className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700">Save Post</button>
+            <button type="button" onClick={() => navigate('/admin/blog')} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Hủy</button>
+            <button type="submit" className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700">Lưu bài viết</button>
         </div>
       </form>
     </div>

@@ -37,15 +37,15 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Link to="/admin/products" className="text-2xl font-serif-display font-bold">KLORA Admin</Link>
         </div>
         <nav className="flex-1 px-2 py-4 space-y-2">
-          <NavLink to="/admin/products" className={navLinkClasses}>Products</NavLink>
-          <NavLink to="/admin/blog" className={navLinkClasses}>Blog Posts</NavLink>
+          <NavLink to="/admin/products" className={navLinkClasses}>Sản phẩm</NavLink>
+          <NavLink to="/admin/blog" className={navLinkClasses}>Blog</NavLink>
         </nav>
         <div className="px-2 py-4 border-t border-gray-700">
             <button 
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-                Logout
+                Đăng xuất
             </button>
         </div>
       </aside>

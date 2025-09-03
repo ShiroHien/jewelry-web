@@ -28,13 +28,25 @@ const CategoryPage: React.FC = () => {
     }
   }, [category]);
 
+  const categoryMap: Record<string, string> = {
+    "Rings": "Nhẫn",
+    "Necklaces": "Vòng cổ",
+    "Bracelets": "Vòng tay",
+    "Earrings": "Bông tai",
+    "Others": "Khác",
+    "Pendants": 'Mặt dây',
+    "Sets": 'Bộ trang sức',
+    "Watches": 'Đồng hồ',
+    "Blog": 'Blog'
+  };
+
   const formattedCategory = category?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  const localizedCategory = formattedCategory && categoryMap[formattedCategory] ? categoryMap[formattedCategory] : formattedCategory;
 
   return (
     <div className="container mx-auto px-6 py-32 min-h-[60vh]">
       <div className="text-center mb-16">
-        <h1 className="text-5xl font-serif-display font-bold capitalize mb-4">{formattedCategory}</h1>
-        <p className="text-lg text-gray-600">Discover our exclusive collection of {formattedCategory}.</p>
+        <h1 className="text-5xl font-serif-display font-bold capitalize mb-4">{localizedCategory}</h1>
       </div>
 
       {loading ? (
@@ -54,7 +66,7 @@ const CategoryPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">No products found in this category.</p>
+        <p className="text-center text-gray-500">Không tìm thấy sản phẩm nào trong danh mục này.</p>
       )}
     </div>
   );

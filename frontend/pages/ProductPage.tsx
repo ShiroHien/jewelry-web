@@ -29,6 +29,12 @@ const ProductPage: React.FC = () => {
     fetchProduct();
   }, [id]);
 
+  const availabilityMap: Record<string, string> = { 
+    "Available": "Còn hàng",
+    "Sold Out": "Hết hàng"
+  };
+  const getLocalizedAvailability = (status: string) => availabilityMap[status] || status;
+
   if (loading) {
     return (
       <div className="container mx-auto px-6 py-24 min-h-screen">
@@ -55,7 +61,7 @@ const ProductPage: React.FC = () => {
   }
 
   if (!product) {
-    return <div className="text-center py-24">Product not found.</div>;
+    return <div className="text-center py-24">Không tìm thấy sản phẩm.</div>;
   }
 
   const availabilityColor = product.availability === ProductAvailability.Available ? 'text-green-600' : 'text-red-600';
@@ -84,7 +90,7 @@ const ProductPage: React.FC = () => {
 
           {/* Product Info */}
           <div className="lg:pt-10">
-            <p className={`text-sm uppercase font-bold tracking-widest ${availabilityColor} mb-2`}>{product.availability}</p>
+            <p className={`text-sm uppercase font-bold tracking-widest ${availabilityColor} mb-2`}>{getLocalizedAvailability(product.availability)}</p>
             <h1 className="text-4xl md:text-5xl font-serif-display font-bold text-gray-900 mb-3">{product.name}</h1>
             <p className="text-lg text-gray-600 mb-8">{product.briefDescription}</p>
 
@@ -93,7 +99,7 @@ const ProductPage: React.FC = () => {
             </p>
 
             <div className="mt-16 pt-12 border-t border-gray-200">
-                <h2 className="text-2xl font-serif-display font-bold text-center mb-8">Description</h2>
+                <h2 className="text-2xl font-serif-display font-bold text-center mb-8">Mô tả sản phẩm</h2>
                 <div className="space-y-8 text-base leading-relaxed">
                     <p className="text-gray-700">{product.description}</p>
                      {Object.keys(product.details).length > 0 && (

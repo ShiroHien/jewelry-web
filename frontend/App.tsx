@@ -10,7 +10,7 @@ import AdminLoginPage from './pages/admin/AdminLoginPage';
 import ProductListPage from './pages/admin/ProductListPage';
 import AdminBlogListPage from './pages/admin/BlogListPage';
 import ProductEditPage from './pages/admin/ProductEditPage';
-import BlogEditPage from './pages/admin/BlogEditPage'; // Import the new blog edit page
+import BlogEditPage from './pages/admin/BlogEditPage'; 
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
 
@@ -26,7 +26,6 @@ const App: React.FC = () => {
               <Route path="products/new" element={<ProductEditPage />} />
               <Route path="products/edit/:id" element={<ProductEditPage />} />
               <Route path="blog" element={<AdminBlogListPage />} />
-              {/* Add routes for blog edit/new */}
               <Route path="blog/new" element={<BlogEditPage />} />
               <Route path="blog/edit/:id" element={<BlogEditPage />} />
             </Routes>

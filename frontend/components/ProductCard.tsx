@@ -11,6 +11,13 @@ const truncate = (str: string, num: number) => {
 };
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+    console.log("Product Name:", product.name, "Availability:", product.availability);
+    const availabilityMap: Record<string, string> = { 
+      "Available": "Còn hàng",
+      "Sold Out": "Hết hàng"
+    };
+    const getLocalizedAvailability = (status: string) => availabilityMap[status] || status;
+    
     const availabilityColor = product.availability === ProductAvailability.Available ? 'text-green-600' : 'text-red-600';
     
     return (
@@ -24,7 +31,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
                     />
                 </Link>
                 <Link to={`/products/${product._id}`} className="absolute inset-0 bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="px-6 py-2 border border-black text-black uppercase tracking-widest text-sm">View</span>
+                    <span className="px-6 py-2 border border-black text-black uppercase tracking-widest text-sm">XEM NGAY</span>
                 </Link>
             </div>
             <h3 className="text-xl font-serif-display font-bold mb-1">
@@ -33,7 +40,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
                 </Link>
             </h3>
             <p className="text-gray-500 text-sm mb-2">{truncate(product.briefDescription, 7)}</p>
-            <p className={`text-xs font-bold uppercase tracking-wider ${availabilityColor} mb-2`}>{product.availability}</p>
+            <p className={`text-xs font-bold uppercase tracking-wider ${availabilityColor} mb-2`}>{getLocalizedAvailability(product.availability)}</p>
             <p className="text-base font-medium text-gray-900">
                 {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}
             </p>

@@ -25,8 +25,8 @@ const AmberSection: React.FC = () => {
   return (
     <section className="py-24 bg-gray-50">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-4xl md:text-5xl font-serif-display mb-4">Amber Collection</h2>
-        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">Discover the golden warmth and ancient allure of our exclusive amber pieces.</p>
+        <h2 className="text-4xl md:text-5xl font-serif-display mb-4">Bộ sưu tập Hổ Phách</h2>
+        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">Khám phá sự ấm áp của sắc vàng và vẻ quyến rũ cổ xưa từ những món trang sức hổ phách.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {loading ? (
               Array.from({ length: 3 }).map((_, index) => (

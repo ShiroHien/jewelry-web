@@ -1,13 +1,13 @@
 
 export enum ProductCategory {
-  Bracelets = 'Bracelets',
-  Necklaces = 'Necklaces',
-  Pendants = 'Pendants',
-  Earrings = 'Earrings',
-  Rings = 'Rings',
-  Sets = 'Sets',
-  Watches = 'Watches',
-  Others = 'Others',
+  Bracelets = 'Vòng tay',
+  Necklaces = 'Vòng cổ',
+  Pendants = 'Mặt dây',
+  Earrings = 'Bông tai',
+  Rings = 'Nhẫn',
+  Sets = 'Bộ trang sức',
+  Watches = 'Đồng hồ',
+  Others = 'Khác',
   Blog = 'Blog'
 }
 
@@ -44,5 +44,5 @@ export interface BlogPost {
   date: string;
   author: string;
   content: string;
-  excerpt?: string; // Excerpt is now optional as we have full content
+  excerpt?: string; 
 }

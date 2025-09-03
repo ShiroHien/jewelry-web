@@ -16,7 +16,7 @@ const ProductSchema: Schema = new Schema({
   name: { type: String, required: true },
   briefDescription: { type: String, required: true },
   description: { type: String, required: true },
-  images: { type: [String], required: true, validate: [(val: string[]) => val.length <= 20, 'Cannot have more than 20 images.'] },
+  images: { type: [String], required: true, validate: [(val: string[]) => val.length <= 20, 'Không thể đăng quá 20 ảnh.'] },
   category: { type: String, required: true },
   tags: { type: [String], default: [] },
   details: { type: Map, of: String },

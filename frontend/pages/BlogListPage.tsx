@@ -25,8 +25,8 @@ const BlogListPage: React.FC = () => {
     <div className="bg-white py-24 md:py-32">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-serif-display font-bold">From The Journal</h1>
-            <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Inspirations, stories, and deep dives into the world of fine jewelry.</p>
+            <h1 className="text-5xl md:text-6xl font-serif-display font-bold">Blog</h1>
+            <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Những câu chuyện, khám phá về thế giới trang sức.</p>
         </div>
         
         {loading ? (

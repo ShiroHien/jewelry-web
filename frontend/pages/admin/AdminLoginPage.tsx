@@ -25,12 +25,12 @@ const AdminLoginPage: React.FC = () => {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-serif-display font-bold">KLORA Admin</h1>
-          <p className="mt-2 text-gray-600">Sign in to manage your store</p>
+          <p className="mt-2 text-gray-600">Đăng nhập sử dụng tài khoản admin</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
+              <label htmlFor="email-address" className="sr-only">Email</label>
               <input
                 id="email-address"
                 name="email"
@@ -44,7 +44,7 @@ const AdminLoginPage: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="password-sr" className="sr-only">Password</label>
+              <label htmlFor="password-sr" className="sr-only">Mật khẩu</label>
               <input
                 id="password-sr"
                 name="password"
@@ -66,7 +66,7 @@ const AdminLoginPage: React.FC = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
-              Sign in
+              Đăng nhập
             </button>
           </div>
         </form>

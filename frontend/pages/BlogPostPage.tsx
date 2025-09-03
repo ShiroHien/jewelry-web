@@ -39,7 +39,7 @@ const BlogPostPage: React.FC = () => {
   }
 
   if (!post) {
-    return <div className="text-center py-24">Blog post not found.</div>;
+    return <div className="text-center py-24">Không tìm thấy bài viết.</div>;
   }
 
   return (

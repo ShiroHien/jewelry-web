@@ -14,7 +14,7 @@ const BlogCard: React.FC<{ post: BlogPost }> = ({ post }) => {
         <h3 className="text-2xl font-serif-display font-bold text-black mb-3 group-hover:text-gray-700 transition-colors">{post.title}</h3>
         <p className="text-gray-600 mb-4">{post.content.substring(0, 120)}...</p>
         <span className="font-bold uppercase tracking-widest text-sm self-start text-black border-b-2 border-black group-hover:border-gray-400 transition-all duration-300">
-          Read More
+          Đọc thêm
         </span>
       </div>
     </Link>
@@ -42,8 +42,8 @@ const BlogSection: React.FC = () => {
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-serif-display text-center mb-4">From Our Journal</h2>
-        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto text-center">Inspirations, stories, and deep dives into the world of fine jewelry.</p>
+        <h2 className="text-4xl md:text-5xl font-serif-display text-center mb-4">Blog</h2>
+        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto text-center">Những câu chuyện và khám phá sâu hơn về thế giới trang sức.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {loading ? (
             Array.from({ length: 3 }).map((_, index) => (
