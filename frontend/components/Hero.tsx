@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
     <section className="h-screen flex items-center relative overflow-hidden">
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/assets/hero-banner.jpg)' }}
+        style={{ backgroundImage: 'url(public/assets/hero-banner.jpg)' }}
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/10"></div>
       </div>
