@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
     <section className="h-screen flex items-center relative overflow-hidden">
       <div
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('https://static.vecteezy.com/system/resources/previews/039/272/907/large_2x/ai-generated-gemstones-scattered-on-a-white-background-with-empty-space-in-the-center-free-photo.jpg')` }}
+        style={{ backgroundImage: 'url(/components/assets/hero-banner.jpg)' }}
       >
         <div className="absolute top-0 left-0 w-full h-full bg-black/10"></div>
       </div>

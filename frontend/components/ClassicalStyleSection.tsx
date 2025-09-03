@@ -11,19 +11,19 @@ interface FeatureCardProps {
 
 const MOCK_STYLES: ClassicalStyle[] = [
   {
-    image: 'https://images.unsplash.com/photo-1611652022417-a5734a2155c8?q=80&w=1974&auto=format&fit=crop',
+    image: '/components/assets/ring-banner.jpg',
     title: 'Nhẫn Vượt Thời Gian',
     description: 'Nét đẹp trường tồn, giá trị vĩnh cửu.',
     link: '/rings',
   },
   {
-    image: 'https://images.unsplash.com/photo-1599643477877-53a8a21350a8?q=80&w=1974&auto=format&fit=crop',
+    image: '/components/assets/necklace-banner.jpg',
     title: 'Vòng Cổ Sang Trọng',
     description: 'Điểm nhấn đặc trưng cho phong cách của bạn.',
     link: '/necklaces',
   },
   {
-    image: 'https://images.unsplash.com/photo-1617038260897-41a189f41794?q=80&w=1974&auto=format&fit=crop',
+    image: '/components/assets/bracelet-banner.jpg',
     title: 'Vòng Tay Thanh Lịch',
     description: 'Một nét duyên dáng cho mọi sự kiện.',
     link: '/bracelets',
