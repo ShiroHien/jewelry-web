@@ -104,7 +104,7 @@ const ProductPage: React.FC = () => {
                     <p className="text-gray-700">{product.description}</p>
                      {Object.keys(product.details).length > 0 && (
                         <div>
-                            <h3 className="font-bold text-lg mb-4">Details</h3>
+                            <h3 className="font-bold text-lg mb-4">Thông tin chi tiết</h3>
                             <ul className="space-y-2 text-gray-700 border-t border-gray-200 pt-4">
                                 {Object.entries(product.details).map(([key, value]) => (
                                     <li key={key} className="flex justify-between">

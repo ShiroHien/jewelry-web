@@ -1,13 +1,13 @@
 
 export enum ProductCategory {
-  Bracelets = 'Vòng tay',
-  Necklaces = 'Vòng cổ',
-  Pendants = 'Mặt dây',
-  Earrings = 'Bông tai',
-  Rings = 'Nhẫn',
-  Sets = 'Bộ trang sức',
-  Watches = 'Đồng hồ',
-  Others = 'Khác',
+  Bracelets = 'Bracelets',
+  Necklaces = 'Necklaces',
+  Pendants = 'Pendants',
+  Earrings = 'Earrings',
+  Rings = 'Rings',
+  Sets = 'Sets',
+  Watches = 'Watches',
+  Others = 'Others',
   Blog = 'Blog'
 }
 

@@ -12,15 +12,15 @@ const Footer: React.FC = () => {
         <div className="mb-12">
           <h3 className="text-2xl font-serif-display text-black mb-6">Contact Us</h3>
           <div className="flex justify-center items-center space-x-8">
-            <a href="mailto:contact@klora.com" className="flex items-center space-x-2 hover:text-black transition-colors">
+            <a href="mailto:kimloan2104@gmail.com" className="flex items-center space-x-2 hover:text-black transition-colors">
               <EmailIcon />
-              <span>contact@klora.com</span>
+              <span>kimloan2104@gmail.com</span>
             </a>
-            <a href="tel:+1234567890" className="flex items-center space-x-2 hover:text-black transition-colors">
+            <a href="tel:+843726992272" className="flex items-center space-x-2 hover:text-black transition-colors">
               <PhoneIcon />
-              <span>+1 (234) 567-890</span>
+              <span>+84 3726992272</span>
             </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:text-black transition-colors">
+            <a href="https://www.facebook.com/kimloan2104" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:text-black transition-colors">
               <FacebookIcon />
               <span>Facebook</span>
             </a>
