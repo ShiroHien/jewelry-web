@@ -5,6 +5,18 @@ import MenuIcon from './icons/MenuIcon';
 import CloseIcon from './icons/CloseIcon';
 import Logo from './icons/Logo';
 
+const categoryMap: Record<ProductCategory, string> = {
+  [ProductCategory.Rings]: "Nhẫn",
+  [ProductCategory.Necklaces]: "Vòng cổ",
+  [ProductCategory.Bracelets]: "Vòng tay",
+  [ProductCategory.Earrings]: "Bông tai",
+  [ProductCategory.Others]: "Khác",
+  [ProductCategory.Pendants]: 'Mặt dây',
+  [ProductCategory.Sets]: 'Bộ trang sức',
+  [ProductCategory.Watches]: 'Đồng hồ', // Include Watches in the map
+  [ProductCategory.Blog]: 'Blog'
+};
+
 const navLinks: { name: ProductCategory, path: string }[] = [
   { name: ProductCategory.Bracelets, path: '/bracelets' },
   { name: ProductCategory.Necklaces, path: '/necklaces' },
@@ -15,6 +27,7 @@ const navLinks: { name: ProductCategory, path: string }[] = [
   { name: ProductCategory.Others, path: '/others' },
   { name: ProductCategory.Blog, path: '/blog' },
 ];
+
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +51,7 @@ const Header: React.FC = () => {
           <nav className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link key={link.name} to={link.path} className="relative group text-base uppercase tracking-widest text-black py-1">
-                {link.name}
+                {categoryMap[link.name]}
                 <span className="absolute inset-x-0 bottom-0 h-[1px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-center"></span>
               </Link>
             ))}
@@ -69,7 +82,7 @@ const Header: React.FC = () => {
               onClick={() => setIsOpen(false)}
               className="relative group text-2xl uppercase tracking-widest text-black py-2"
             >
-              {link.name}
+              {categoryMap[link.name]}
               <span className="absolute inset-x-0 bottom-0 h-[2px] bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-center"></span>
             </Link>
           ))}
