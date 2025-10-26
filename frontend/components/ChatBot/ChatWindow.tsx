@@ -39,38 +39,95 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputText;
     setInputText('');
     setIsLoading(true);
 
+    // Create a placeholder bot message that will be updated with streaming content
+    const botMessageId = (Date.now() + 1).toString();
+    const botMessage: Message = {
+      id: botMessageId,
+      text: '',
+      sender: 'bot',
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, botMessage]);
+
     try {
+      console.log('Sending message to backend:', currentInput);
+      
       const response = await fetch('http://localhost:3001/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: inputText }),
+        body: JSON.stringify({ message: currentInput }),
       });
 
-      const data = await response.json();
-      
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.reply,
-        sender: 'bot',
-        timestamp: new Date(),
-      };
+      console.log('Response status:', response.status);
 
-      setMessages(prev => [...prev, botMessage]);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Response body is null');
+
+      const decoder = new TextDecoder();
+      let fullResponse = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+          console.log('Streaming completed. Full response:', fullResponse);
+          break;
+        }
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              console.log('Received SSE data:', data);
+              
+              if (data.error) {
+                throw new Error(data.error);
+              }
+              
+              if (data.chunk) {
+                fullResponse += data.chunk;
+                // Update the bot message with the accumulated response
+                setMessages(prev => 
+                  prev.map(msg => 
+                    msg.id === botMessageId 
+                      ? { ...msg, text: fullResponse }
+                      : msg
+                  )
+                );
+              }
+              
+              if (data.done) {
+                console.log('Response complete:', data.fullResponse);
+                setIsLoading(false);
+              }
+            } catch (e) {
+              console.error('Error parsing SSE data:', e);
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: 'Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
+      // Update the bot message with error text
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === botMessageId 
+            ? { ...msg, text: 'Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này. Vui lòng thử lại sau.' }
+            : msg
+        )
+      );
       setIsLoading(false);
     }
   };
@@ -104,13 +161,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
                 }`}
               >
                 <div
-                  className={`inline-block p-3 rounded-lg ${
+                  className={`inline-block p-3 rounded-lg max-w-[80%] ${
                     message.sender === 'user'
                       ? 'bg-gray-800 text-white'
                       : 'bg-white text-gray-800 border border-gray-200'
                   }`}
                 >
-                  {message.text}
+                  <div className="whitespace-pre-wrap break-words">{message.text}</div>
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
                   {message.timestamp.toLocaleTimeString()}
@@ -119,6 +176,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
             ))}
             {isLoading && (
               <div className="flex items-center text-gray-500 text-sm">
+                <span className="mr-2">Đang trả lời</span>
                 <div className="animate-bounce mx-1">.</div>
                 <div className="animate-bounce mx-1 animation-delay-200">.</div>
                 <div className="animate-bounce mx-1 animation-delay-400">.</div>
