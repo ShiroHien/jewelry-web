@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,8 +13,12 @@ import ProductEditPage from './pages/admin/ProductEditPage';
 import BlogEditPage from './pages/admin/BlogEditPage'; 
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
+import ChatBubble from './components/ChatBot/ChatBubble';
+import ChatWindow from './components/ChatBot/ChatWindow';
 
 const App: React.FC = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <div className="bg-white min-h-screen text-black relative overflow-x-hidden">
       <Routes>
@@ -33,6 +37,17 @@ const App: React.FC = () => {
         } />
         <Route path="/*" element={<MainLayout />} />
       </Routes>
+
+      {/* ChatBot components */}
+      <ChatBubble 
+        isOpen={isChatOpen}
+        onToggle={() => setIsChatOpen(true)}
+        onClose={() => setIsChatOpen(false)}
+      />
+      <ChatWindow 
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </div>
   );
 };

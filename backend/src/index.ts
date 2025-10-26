@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes';
 import blogRoutes from './routes/blog.routes';
 import uploadRoutes from './routes/upload.routes';
+import chatRoutes from './routes/chat.routes';
 import seedAdmin from './seed'; // Add this import
 
 // Load environment variables from .env file
@@ -33,6 +34,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/chat', chatRoutes);
 
 
 // A simple test route to make sure the server is running
