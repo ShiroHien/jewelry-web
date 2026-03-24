@@ -16,9 +16,9 @@ const Footer: React.FC = () => {
               <EmailIcon />
               <span>kimloan2104@gmail.com</span>
             </a>
-            <a href="tel:+843726992272" className="flex items-center space-x-2 hover:text-black transition-colors">
+            <a href="tel:+84913036796" className="flex items-center space-x-2 hover:text-black transition-colors">
               <PhoneIcon />
-              <span>+84 3726992272</span>
+              <span>+84 913036796</span>
             </a>
             <a href="https://www.facebook.com/kimloan2104" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:text-black transition-colors">
               <FacebookIcon />
