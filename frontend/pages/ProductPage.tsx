@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '../api/publicService';
 import { Product, ProductAvailability } from '../types';
@@ -8,6 +8,8 @@ const ProductPage: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const thumbnailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,6 +36,33 @@ const ProductPage: React.FC = () => {
     "Sold Out": "Hết hàng"
   };
   const getLocalizedAvailability = (status: string) => availabilityMap[status] || status;
+
+  const moveToIndex = (offset: number) => {
+    if (!product?.images?.length) return;
+    const currentIndex = product.images.indexOf(activeImage);
+    const nextIndex = (currentIndex + offset + product.images.length) % product.images.length;
+    setActiveImage(product.images[nextIndex]);
+  };
+
+  const handlePrevImage = () => moveToIndex(-1);
+  const handleNextImage = () => moveToIndex(1);
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsModalOpen(false);
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevImage();
+      } else if (event.key === 'ArrowRight') {
+        handleNextImage();
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isModalOpen, activeImage, product]);
 
   if (loading) {
     return (
@@ -71,27 +100,51 @@ const ProductPage: React.FC = () => {
         <div className="container mx-auto px-6 py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Image Gallery */}
-          <div className="flex flex-col-reverse md:flex-row gap-4 sticky top-24">
-            <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
-              {product.images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`w-20 h-20 flex-shrink-0 cursor-pointer border-2 ${activeImage === img ? 'border-black' : 'border-transparent'}`}
-                  onMouseEnter={() => setActiveImage(img)}
-                >
-                  <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
-                </div>
-              ))}
+          <div className="flex flex-col-reverse md:flex-row gap-3 lg:gap-5 sticky top-24 justify-center md:justify-start">
+            <div className="w-20 flex flex-col items-center md:items-start gap-2 h-[320px] md:h-[640px]">
+              <button
+                onClick={() => thumbnailsRef.current?.scrollBy({ top: -80, behavior: 'smooth' })}
+                className="hidden md:flex h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
+                aria-label="Previous image"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 10L8 6L12 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <div ref={thumbnailsRef} className="flex md:flex-col gap-2 overflow-hidden flex-1">
+                {product.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(img)}
+                    className={`w-20 h-20 flex-shrink-0 cursor-pointer border-2 ${activeImage === img ? 'border-black' : 'border-transparent'}`}
+                    aria-label={`Product thumbnail ${index + 1}`}
+                  >
+                    <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => thumbnailsRef.current?.scrollBy({ top: 80, behavior: 'smooth' })}
+                className="hidden md:flex h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
+                aria-label="Next image"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
             </div>
-            <div className="flex-1 aspect-square">
-              <img src={activeImage} alt={product.name} className="w-full h-full object-cover" />
+
+            <div className="w-full md:max-w-[640px] h-[320px] md:h-[640px] cursor-pointer bg-stone-200 mx-auto md:mx-0" onClick={() => setIsModalOpen(true)}>
+              <img src={activeImage} alt={product.name} className="w-full h-full object-contain" />
             </div>
           </div>
 
           {/* Product Info */}
           <div className="lg:pt-10">
             <p className={`text-sm uppercase font-bold tracking-widest ${availabilityColor} mb-2`}>{getLocalizedAvailability(product.availability)}</p>
-            <h1 className="text-4xl md:text-5xl font-serif-display font-bold text-gray-900 mb-3">{product.name}</h1>
+            <h1 className="text-3xl md:text-3xl font-serif-display font-semibold text-gray-900 mb-3">{product.name}</h1>
             <p className="text-lg text-gray-600 mb-8">{product.briefDescription}</p>
 
             <p className="text-3xl font-serif-display text-gray-900 mb-8">
@@ -120,6 +173,72 @@ const ProductPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal for full-size image */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setIsModalOpen(false)}
+          style={{
+            '--hfqtkC': '3px',
+            '--fCuVLy': '2px',
+            '--fFEzoc': '1px',
+            '--hHSOTV': '0px',
+            '--gdTNHt': 'Helvetica Neue,Arial,Hiragino Kaku Gothic ProN Custom,Hiragino Sans Custom,Meiryo Custom,sans-serif',
+            '--jpmaOu': 'Helvetica Neue,Arial,PingFang TC Custom,Noto Sans TC Custom,Microsoft JhengHei,Hiragino Kaku Gothic ProN Custom,Hiragino Sans Custom,Meiryo Custom,sans-serif',
+            '--kqLvSG': '0px 0px 0px 0px transparent',
+            '--ljPKsT': '0px 2px 4px 0px rgba(0,0,0,0.25)',
+            '--jPGeEO': 'rgba(0,0,0,0.2)',
+          } as React.CSSProperties}
+        >
+          <div
+            className="relative mx-auto w-full max-w-[98vw] max-h-[98vh] md:max-w-[90vw] lg:max-w-[85vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 z-20 h-9 w-9 rounded-lg bg-white/70 p-0.5 text-gray-800 hover:bg-white/90"
+              aria-label="Close big image"
+            >
+              ✕
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevImage();
+              }}
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 hover:bg-white hidden sm:flex"
+              aria-label="Previous image"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextImage();
+              }}
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 hover:bg-white hidden sm:flex"
+              aria-label="Next image"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div className="relative h-[70vh] md:h-[85vh] rounded-lg bg-transparent shadow-[var(--ljPKsT)]">
+              <img
+                src={activeImage}
+                alt={product.name}
+                className="mx-auto h-full w-full object-contain rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
