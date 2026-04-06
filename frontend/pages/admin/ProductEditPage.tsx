@@ -164,7 +164,7 @@ const ProductEditPage: React.FC = () => {
             <div className="mt-2 grid grid-cols-4 gap-4">
                 {formData.images.map((img, index) => (
                     <div key={index} className="relative group">
-                        <img src={img.url} alt={img.alt} className="w-full h-32 object-cover rounded-md"/>
+                        <img src={img.url} alt={img.alt} loading="lazy" decoding="async" className="w-full h-32 object-cover rounded-md"/>
                         <button type="button" onClick={() => removeImage(index)} className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100">&times;</button>
                     </div>
                 ))}

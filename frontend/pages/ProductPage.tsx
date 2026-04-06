@@ -120,7 +120,7 @@ const ProductPage: React.FC = () => {
                     className={`w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 cursor-pointer border-2 rounded-md overflow-hidden ${activeImage === img ? 'border-black' : 'border-transparent'}`}
                     aria-label={`Product thumbnail ${index + 1}`}
                   >
-                    <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`${product.name} thumbnail ${index + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -137,7 +137,7 @@ const ProductPage: React.FC = () => {
             </div>
 
             <div className="order-1 lg:order-2 w-full lg:max-w-[640px] aspect-square lg:h-[640px] cursor-pointer bg-stone-200 mx-auto lg:mx-0 rounded-2xl overflow-hidden" onClick={() => setIsModalOpen(true)}>
-              <img src={activeImage} alt={product.name} className="w-full h-full object-contain" />
+              <img src={activeImage} alt={product.name} loading="eager" decoding="async" fetchPriority="high" className="w-full h-full object-contain" />
             </div>
           </div>
 
@@ -233,6 +233,8 @@ const ProductPage: React.FC = () => {
               <img
                 src={activeImage}
                 alt={product.name}
+                loading="eager"
+                decoding="async"
                 className="mx-auto h-full w-full object-contain rounded-lg"
               />
             </div>

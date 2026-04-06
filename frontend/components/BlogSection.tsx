@@ -7,7 +7,7 @@ const BlogCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   return (
     <Link to={`/blog/${post.slug}`} className="group block">
       <div className="relative overflow-hidden aspect-[4/5]">
-        <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <img src={post.coverImage} alt={post.title} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
       </div>
       <div className="pt-6 text-center">
         <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">{new Date(post.date).toLocaleDateString()}</p>

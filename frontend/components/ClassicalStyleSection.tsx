@@ -40,7 +40,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ image, title, description, li
   return (
     <div className="group relative overflow-hidden text-black">
       <div className="h-75 overflow-hidden"> 
-        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        <img src={image} alt={title} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
       </div>
       <div className="bg-white flex flex-col justify-start pt-6"> 
         <h3 className="text-3xl font-serif-display mb-2">{title}</h3>

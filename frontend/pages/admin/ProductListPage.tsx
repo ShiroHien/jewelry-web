@@ -62,7 +62,7 @@ const ProductListPage: React.FC = () => {
             {products.map((product) => (
               <tr key={product._id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <img src={product.images[0]} alt={product.name} className="w-16 h-16 object-cover rounded"/>
+                  <img src={product.images[0]} alt={product.name} loading="lazy" decoding="async" className="w-16 h-16 object-cover rounded"/>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p className="text-gray-900 whitespace-no-wrap">{product.name}</p>

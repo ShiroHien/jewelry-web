@@ -46,7 +46,7 @@ const BlogListPage: React.FC = () => {
                 {posts.map(post => (
                     <Link to={`/blog/${post.slug}`} key={post._id} className="group block">
                         <div className="overflow-hidden mb-6">
-                            <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover aspect-[16/10] transition-transform duration-500 group-hover:scale-105" />
+                            <img src={post.coverImage} alt={post.title} loading="lazy" decoding="async" className="w-full h-full object-cover aspect-[16/10] transition-transform duration-500 group-hover:scale-105" />
                         </div>
                         <div>
                             <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">{new Date(post.date).toLocaleDateString()}</p>

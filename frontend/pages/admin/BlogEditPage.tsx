@@ -117,7 +117,7 @@ const BlogEditPage: React.FC = () => {
         
         <div>
           <label className="block text-sm font-medium text-gray-700">Ảnh bìa</label>
-          {formData.coverImage && <img src={formData.coverImage} alt="Cover" className="w-48 h-auto my-2 rounded-md"/>}
+          {formData.coverImage && <img src={formData.coverImage} alt="Cover" loading="lazy" decoding="async" className="w-48 h-auto my-2 rounded-md"/>}
           <input type="file" onChange={handleImageUpload} disabled={isUploading} className="text-sm"/>
           {isUploading && <p className="text-sm text-gray-500 mt-1">Đang tải...</p>}
         </div>

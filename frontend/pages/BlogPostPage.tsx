@@ -57,7 +57,7 @@ const BlogPostPage: React.FC = () => {
                 </header>
                 
                 <div className="mb-12">
-                    <img src={post.coverImage} alt={post.title} className="w-full h-auto object-cover aspect-[16/9]" />
+                    <img src={post.coverImage} alt={post.title} loading="lazy" decoding="async" className="w-full h-auto object-cover aspect-[16/9]" />
                 </div>
                 
                 <div 

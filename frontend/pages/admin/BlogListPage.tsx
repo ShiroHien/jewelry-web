@@ -60,7 +60,7 @@ const BlogListPage: React.FC = () => {
                         {posts.map((post) => (
                             <tr key={post._id}>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <img src={post.coverImage} alt={post.title} className="w-24 h-16 object-cover rounded" />
+                                    <img src={post.coverImage} alt={post.title} loading="lazy" decoding="async" className="w-24 h-16 object-cover rounded" />
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <p className="text-gray-900 whitespace-no-wrap">{post.title}</p>
