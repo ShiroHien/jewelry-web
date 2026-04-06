@@ -13,21 +13,22 @@ import ProductEditPage from './pages/admin/ProductEditPage';
 import BlogEditPage from './pages/admin/BlogEditPage'; 
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
+import { ADMIN_NESTED_ROUTE_PATHS, FRONTEND_ROUTES } from './constants/routes';
 
 const App: React.FC = () => {
   return (
     <div className="bg-white min-h-screen text-black relative overflow-x-hidden">
       <Routes>
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path={FRONTEND_ROUTES.adminLogin} element={<AdminLoginPage />} />
         <Route path="/admin/*" element={
           <AdminLayout>
             <Routes>
-              <Route path="products" element={<ProductListPage />} />
-              <Route path="products/new" element={<ProductEditPage />} />
-              <Route path="products/edit/:id" element={<ProductEditPage />} />
-              <Route path="blog" element={<AdminBlogListPage />} />
-              <Route path="blog/new" element={<BlogEditPage />} />
-              <Route path="blog/edit/:id" element={<BlogEditPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.products} element={<ProductListPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.productsNew} element={<ProductEditPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.productsEdit} element={<ProductEditPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.blog} element={<AdminBlogListPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.blogNew} element={<BlogEditPage />} />
+              <Route path={ADMIN_NESTED_ROUTE_PATHS.blogEdit} element={<BlogEditPage />} />
             </Routes>
           </AdminLayout>
         } />
@@ -46,11 +47,11 @@ const MainLayout: React.FC = () => (
     <Header />
     <main>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/products/:id" element={<ProductPage />} />
-        <Route path="/blog" element={<BlogListPage />} />
-        <Route path="/blog/:slug" element={<BlogPostPage />} />
-        <Route path="/:category" element={<CategoryPage />} />
+        <Route path={FRONTEND_ROUTES.home} element={<HomePage />} />
+        <Route path={FRONTEND_ROUTES.product} element={<ProductPage />} />
+        <Route path={FRONTEND_ROUTES.blog} element={<BlogListPage />} />
+        <Route path={FRONTEND_ROUTES.blogPost} element={<BlogPostPage />} />
+        <Route path={FRONTEND_ROUTES.category} element={<CategoryPage />} />
       </Routes>
     </main>
     <Footer />

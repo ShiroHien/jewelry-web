@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAdminProductById, createProduct, updateProduct, uploadImage } from '../../api/adminService';
 import { ProductCategory, Product, ProductAvailability } from '../../types';
+import { FRONTEND_ROUTES } from '../../constants/routes';
+import {
+  PRODUCT_CATEGORY_OPTIONS,
+  getLocalizedProductAvailability,
+  getLocalizedProductCategory,
+} from '../../utils/productMetadata';
+import { createChangeHandler } from '../../utils/formState';
 
 type ProductFormData = {
   name: string;
@@ -60,11 +67,7 @@ const ProductEditPage: React.FC = () => {
     }
   }, [id, isEditing]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const isNumber = type === 'number';
-    setFormData(prev => ({ ...prev, [name]: isNumber ? parseFloat(value) : value }));
-  };
+  const handleChange = createChangeHandler(setFormData, { numericFields: ['price'] });
 
   const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({ ...prev, tags: e.target.value.split(',').map(tag => tag.trim()) }));
@@ -128,34 +131,13 @@ const ProductEditPage: React.FC = () => {
         } else {
             await createProduct(productData);
         }
-        navigate('/admin/products');
+        navigate(FRONTEND_ROUTES.adminProducts);
     } catch (error) {
         console.error("Failed to save product", error);
         alert("Failed to save product.");
     }
   };
   
-  const categoryMap: Record<string, string> = {
-    "Rings": "Nhẫn",
-    "Necklaces": "Vòng cổ",
-    "Bracelets": "Vòng tay",
-    "Earrings": "Bông tai",
-    "Others": "Khác",
-    "Pendants": "Mặt dây",
-    "Sets": "Bộ trang sức",
-    "Watches": "Đồng hồ",
-    "Blog": "Blog"
-  };
-
-  const availabilityMap: Record<string, string> = { 
-    "Available": "Còn hàng",
-    "Sold Out": "Hết hàng"
-  };
-
-  // Helper to get localized category name
-  const getLocalizedCategory = (cat: string) => categoryMap[cat] || cat;
-  const getLocalizedAvailability = (status: string) => availabilityMap[status] || status;
-
   if (loading) return <div>Đang tải sản phẩm...</div>;
 
   return (
@@ -222,7 +204,7 @@ const ProductEditPage: React.FC = () => {
             <div>
                 <label className="block text-sm font-medium text-gray-700">Tình trạng</label>
                 <select name="availability" value={formData.availability} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
-                    {Object.values(ProductAvailability).map(status => <option key={status} value={status}>{getLocalizedAvailability(status)}</option>)}
+                  {Object.values(ProductAvailability).map(status => <option key={status} value={status}>{getLocalizedProductAvailability(status)}</option>)}
                 </select>
             </div>
         </div>
@@ -237,11 +219,10 @@ const ProductEditPage: React.FC = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                 >
-                  {Object.values(ProductCategory)
-                    .filter(c => c !== 'Blog')
+                  {PRODUCT_CATEGORY_OPTIONS
                     .map(cat => (
                       <option key={cat} value={cat}>
-                        {getLocalizedCategory(cat)}
+                        {getLocalizedProductCategory(cat)}
                       </option>
                     ))}
                 </select>
@@ -269,7 +250,7 @@ const ProductEditPage: React.FC = () => {
         
         {/* Actions */}
         <div className="flex justify-end">
-            <button type="button" onClick={() => navigate('/admin/products')} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Hủy</button>
+            <button type="button" onClick={() => navigate(FRONTEND_ROUTES.adminProducts)} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Hủy</button>
             <button type="submit" className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700">Lưu</button>
         </div>
       </form>

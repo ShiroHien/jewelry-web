@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { FRONTEND_ROUTES } from '../../constants/routes';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
-      navigate('/admin/login');
+      navigate(FRONTEND_ROUTES.adminLogin);
     } else {
       setIsAuthenticated(true);
     }
@@ -16,7 +17,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
-    navigate('/admin/login');
+    navigate(FRONTEND_ROUTES.adminLogin);
   };
 
   if (!isAuthenticated) {
@@ -34,11 +35,11 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {/* Sidebar */}
       <aside className="w-64 flex-shrink-0 bg-gray-900 text-white flex flex-col">
         <div className="h-16 flex items-center justify-center px-4 border-b border-gray-700">
-          <Link to="/admin/products" className="text-2xl font-serif-display font-bold">KLORA Admin</Link>
+          <Link to={FRONTEND_ROUTES.adminProducts} className="text-2xl font-serif-display font-bold">KLORA Admin</Link>
         </div>
         <nav className="flex-1 px-2 py-4 space-y-2">
-          <NavLink to="/admin/products" className={navLinkClasses}>Sản phẩm</NavLink>
-          <NavLink to="/admin/blog" className={navLinkClasses}>Blog</NavLink>
+          <NavLink to={FRONTEND_ROUTES.adminProducts} className={navLinkClasses}>Sản phẩm</NavLink>
+          <NavLink to={FRONTEND_ROUTES.adminBlog} className={navLinkClasses}>Blog</NavLink>
         </nav>
         <div className="px-2 py-4 border-t border-gray-700">
             <button 

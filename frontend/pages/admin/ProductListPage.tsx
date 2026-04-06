@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAdminProducts, deleteProduct } from '../../api/adminService';
 import { Product } from '../../types';
+import { getLocalizedProductAvailability, getLocalizedProductCategory } from '../../utils/productMetadata';
 
 const ProductListPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -35,26 +36,6 @@ const ProductListPage: React.FC = () => {
     }
   };
   
-  const categoryMap: Record<string, string> = {
-    "Rings": "Nhẫn",
-    "Necklaces": "Vòng cổ",
-    "Bracelets": "Vòng tay",
-    "Earrings": "Bông tai",
-    "Others": "Khác",
-    "Pendants": "Mặt dây",
-    "Sets": "Bộ trang sức",
-    "Watches": "Đồng hồ",
-    "Blog": "Blog"
-  };
-
-  const availabilityMap: Record<string, string> = {
-    "Available": "Còn hàng",
-    "Sold Out": "Hết hàng"
-  };
-
-  const getLocalizedCategory = (cat: string) => categoryMap[cat] || cat;
-  const getLocalizedAvailability = (status: string) => availabilityMap[status] || status;
-
   if (loading) return <div>Đang tải sản phẩm...</div>;
 
   return (
@@ -90,10 +71,10 @@ const ProductListPage: React.FC = () => {
                   <p className="text-gray-900 whitespace-no-wrap">{new Intl.NumberFormat('vi-VN').format(product.price)}</p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">{getLocalizedAvailability(product.availability)}</p>
+                  <p className="text-gray-900 whitespace-no-wrap">{getLocalizedProductAvailability(product.availability)}</p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">{getLocalizedCategory(product.category)}</p>
+                  <p className="text-gray-900 whitespace-no-wrap">{getLocalizedProductCategory(product.category)}</p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
                   <Link to={`/admin/products/edit/${product._id}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Sửa</Link>

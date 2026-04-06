@@ -2,16 +2,21 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import authRoutes from './routes/auth.routes';
-import productRoutes from './routes/product.routes';
-import blogRoutes from './routes/blog.routes';
-import uploadRoutes from './routes/upload.routes';
+import { API_BASE_PATH } from './constants/routes';
+import {
+  DEFAULT_ALLOWED_ORIGINS,
+  ERROR_MESSAGES,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW_MS,
+  REQUEST_BODY_LIMIT,
+} from './constants/security';
+import { registerApiRoutes } from './routes';
 
 const app: Express = express();
 const isTestEnv = process.env.NODE_ENV === 'test';
 
 const getAllowedOrigins = (): string[] => {
-  const rawOrigins = process.env.CORS_ALLOWED_ORIGINS || 'http://localhost:5173';
+  const rawOrigins = process.env.CORS_ALLOWED_ORIGINS || DEFAULT_ALLOWED_ORIGINS;
   return rawOrigins
     .split(',')
     .map((origin) => origin.trim())
@@ -30,49 +35,49 @@ app.use(cors({
       return callback(null, true);
     }
 
-    return callback(new Error('CORS origin not allowed'));
+    return callback(new Error(ERROR_MESSAGES.corsOriginNotAllowed));
   },
   credentials: true,
 }));
 app.use(helmet());
-app.use(express.json({ limit: '100kb' }));
-app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+app.use(express.json({ limit: REQUEST_BODY_LIMIT }));
+app.use(express.urlencoded({ extended: true, limit: REQUEST_BODY_LIMIT }));
 
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 300,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: RATE_LIMIT_MAX.general,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: 'Too many requests, please try again later.' },
+  message: { message: ERROR_MESSAGES.tooManyRequests },
 });
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: RATE_LIMIT_MAX.auth,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: 'Too many login attempts, please try again later.' },
+  message: { message: ERROR_MESSAGES.tooManyLoginAttempts },
 });
 
 const uploadLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 30,
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: RATE_LIMIT_MAX.upload,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: 'Too many upload attempts, please try again later.' },
+  message: { message: ERROR_MESSAGES.tooManyUploadAttempts },
 });
 
 if (!isTestEnv) {
-  app.use('/api', generalLimiter);
+  app.use(API_BASE_PATH, generalLimiter);
 }
 
 const authProtectionMiddleware = isTestEnv ? [] : [authLimiter];
 const uploadProtectionMiddleware = isTestEnv ? [] : [uploadLimiter];
 
-app.use('/api/auth', ...authProtectionMiddleware, authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/blog', blogRoutes);
-app.use('/api/upload', ...uploadProtectionMiddleware, uploadRoutes);
+registerApiRoutes(app, {
+  auth: authProtectionMiddleware,
+  upload: uploadProtectionMiddleware,
+});
 
 app.get('/', (req: Request, res: Response) => {
   res.send('KLORA Jewelry Backend is running!');
@@ -83,12 +88,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     return next();
   }
 
-  if (err.message === 'CORS origin not allowed') {
+  if (err.message === ERROR_MESSAGES.corsOriginNotAllowed) {
     return res.status(403).json({ message: err.message });
   }
 
   if (err.message === 'File too large') {
-    return res.status(413).json({ message: 'File too large. Max upload size is 5MB.' });
+    return res.status(413).json({ message: ERROR_MESSAGES.fileTooLarge });
   }
 
   return res.status(400).json({ message: err.message });

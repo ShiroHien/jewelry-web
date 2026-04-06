@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAdminBlogPostById, createBlogPost, updateBlogPost, uploadImage } from '../../api/adminService';
 import { BlogPost } from '../../types';
+import { FRONTEND_ROUTES } from '../../constants/routes';
+import { createChangeHandler } from '../../utils/formState';
 
 type BlogFormData = Omit<BlogPost, '_id' | 'slug' | 'date'> & { date: string };
 
@@ -19,12 +21,20 @@ const BlogEditPage: React.FC = () => {
   });
   const [loading, setLoading] = useState(isEditing);
   const [isUploading, setIsUploading] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isEditing) {
+      if (!id) {
+        setFetchError('Missing blog post id in route.');
+        setLoading(false);
+        return;
+      }
+
       const fetchPost = async () => {
+        setFetchError(null);
         try {
-          const post = await getAdminBlogPostById(id!);
+          const post = await getAdminBlogPostById(id);
           setFormData({
             title: post.title,
             author: post.author,
@@ -34,6 +44,7 @@ const BlogEditPage: React.FC = () => {
           });
         } catch (error) {
           console.error("Failed to fetch blog post", error);
+          setFetchError(error instanceof Error ? error.message : 'Failed to fetch blog post');
         } finally {
           setLoading(false);
         }
@@ -42,10 +53,7 @@ const BlogEditPage: React.FC = () => {
     }
   }, [id, isEditing]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const handleChange = createChangeHandler(setFormData);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,13 +76,18 @@ const BlogEditPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isEditing && !id) {
+      alert('Cannot update blog post: missing post id in route.');
+      return;
+    }
+
     try {
         if (isEditing) {
             await updateBlogPost(id!, formData);
         } else {
             await createBlogPost(formData);
         }
-        navigate('/admin/blog');
+        navigate(FRONTEND_ROUTES.adminBlog);
     } catch (error) {
         console.error("Failed to save blog post", error);
         alert("Failed to save blog post.");
@@ -82,6 +95,15 @@ const BlogEditPage: React.FC = () => {
   };
   
   if (loading) return <div>Đang tải bài viết...</div>;
+  if (fetchError) {
+    return (
+      <div className="container mx-auto">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+          Không thể tải bài viết: {fetchError}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto">
@@ -117,7 +139,7 @@ const BlogEditPage: React.FC = () => {
         </div>
         
         <div className="flex justify-end">
-            <button type="button" onClick={() => navigate('/admin/blog')} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Hủy</button>
+            <button type="button" onClick={() => navigate(FRONTEND_ROUTES.adminBlog)} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md mr-4">Hủy</button>
             <button type="submit" className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700">Lưu bài viết</button>
         </div>
       </form>

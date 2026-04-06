@@ -76,7 +76,18 @@ export const getAdminBlogPosts = async (): Promise<BlogPost[]> => {
 
 export const getAdminBlogPostById = async (id: string): Promise<BlogPost> => {
     const response = await fetch(`${API_BASE_URL}/blog/admin/${id}`, { headers: getAuthHeaders() });
-    if (!response.ok) throw new Error('Failed to fetch blog post');
+    if (!response.ok) {
+      let message = 'Failed to fetch blog post';
+      try {
+        const errorData = await response.json();
+        if (errorData?.message) {
+          message = errorData.message;
+        }
+      } catch {
+        // Keep fallback message when response body is not JSON.
+      }
+      throw new Error(message);
+    }
     return response.json();
 };
 

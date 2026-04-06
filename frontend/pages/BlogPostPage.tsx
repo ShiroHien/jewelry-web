@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { getBlogPostBySlug } from '../api/publicService';
 import { BlogPost } from '../types';
 
@@ -42,6 +43,8 @@ const BlogPostPage: React.FC = () => {
     return <div className="text-center py-24">Không tìm thấy bài viết.</div>;
   }
 
+  const sanitizedContent = DOMPurify.sanitize(post.content).replace(/\n/g, '<br />');
+
   return (
     <div className="bg-white py-24 md:py-32">
         <div className="container mx-auto px-6 max-w-4xl">
@@ -59,7 +62,7 @@ const BlogPostPage: React.FC = () => {
                 
                 <div 
                     className="prose lg:prose-xl max-w-none mx-auto text-gray-800 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />') }} 
+                  dangerouslySetInnerHTML={{ __html: sanitizedContent }} 
                 />
             </article>
         </div>
