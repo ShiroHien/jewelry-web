@@ -25,10 +25,10 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const payload = { userId: user._id };
+        const payload = { userId: String(user._id), role: user.role };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
 
-        res.json({ token });
+        res.json({ token, role: user.role });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

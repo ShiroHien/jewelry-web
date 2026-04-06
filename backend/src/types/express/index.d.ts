@@ -4,5 +4,10 @@
 declare namespace Express {
   export interface Request {
     file?: Multer.File;
+    user?: {
+      _id: string;
+      email: string;
+      role: 'admin' | 'user';
+    };
   }
 }

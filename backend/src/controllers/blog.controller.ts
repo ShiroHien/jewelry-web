@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import BlogPost from '../models/blogPost.model';
+import { sanitizeBlogPayload } from '../utils/blogSanitizer';
+import {
+    validateBlogCreatePayload,
+    validateBlogUpdatePayload,
+} from '../utils/requestValidators';
 
 // @desc    Get all blog posts
 // @route   GET /api/blog
@@ -33,6 +39,10 @@ export const getBlogPostBySlug = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const getBlogPostById = async (req: Request, res: Response) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid blog post id' });
+        }
+
         const post = await BlogPost.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Blog post not found' });
@@ -49,15 +59,22 @@ export const getBlogPostById = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const createBlogPost = async (req: Request, res: Response) => {
     try {
+        const validation = validateBlogCreatePayload(req.body);
+        if (!validation.ok) {
+            return res.status(400).json({ message: validation.message });
+        }
+
+        const sanitizedBody = sanitizeBlogPayload(validation.data);
+
         // Create a URL-friendly slug from the title
-        const slug = req.body.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-        const newPostData = { ...req.body, slug, date: req.body.date || new Date() };
+        const slug = sanitizedBody.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+        const newPostData = { ...sanitizedBody, slug, date: sanitizedBody.date || new Date() };
         
         const post = new BlogPost(newPostData);
         const createdPost = await post.save();
         res.status(201).json(createdPost);
     } catch (error) {
-        res.status(400).json({ message: 'Invalid blog post data', error });
+        res.status(400).json({ message: 'Invalid blog post data' });
     }
 };
 
@@ -66,22 +83,33 @@ export const createBlogPost = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const updateBlogPost = async (req: Request, res: Response) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid blog post id' });
+        }
+
+        const validation = validateBlogUpdatePayload(req.body);
+        if (!validation.ok) {
+            return res.status(400).json({ message: validation.message });
+        }
+
+        const sanitizedBody = sanitizeBlogPayload(validation.data);
+
         const post = await BlogPost.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Blog post not found' });
         }
         
         // If title is updated, update slug as well
-        if (req.body.title && req.body.title !== post.title) {
-            req.body.slug = req.body.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+        if (sanitizedBody.title && sanitizedBody.title !== post.title) {
+            sanitizedBody.slug = sanitizedBody.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
         }
 
-        Object.assign(post, req.body);
+        Object.assign(post, sanitizedBody);
         
         const updatedPost = await post.save();
         res.json(updatedPost);
     } catch (error) {
-        res.status(400).json({ message: 'Invalid blog post data', error });
+        res.status(400).json({ message: 'Invalid blog post data' });
     }
 };
 
@@ -90,6 +118,10 @@ export const updateBlogPost = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const deleteBlogPost = async (req: Request, res: Response) => {
     try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid blog post id' });
+        }
+
         const post = await BlogPost.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Blog post not found' });

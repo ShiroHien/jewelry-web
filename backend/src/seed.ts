@@ -20,7 +20,7 @@ const seedAdmin = async () => {
         const adminExists = await User.findOne({ email: adminEmail });
 
         if (adminExists) {
-            adminExists.set({ password: adminPassword }); // ensures isModified is true
+            adminExists.set({ password: adminPassword, role: 'admin' }); // ensures isModified is true
             await adminExists.save();
             console.log('Admin user password updated.');
             return;
@@ -29,6 +29,7 @@ const seedAdmin = async () => {
         const admin = new User({
             email: adminEmail,
             password: adminPassword,
+            role: 'admin',
         });
 
         await admin.save();

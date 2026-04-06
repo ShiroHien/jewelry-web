@@ -23,11 +23,10 @@ export const uploadImage = async (req: Request, res: Response) => {
   } catch (error: any) {
     // Log the detailed error to the backend console
     console.error('Cloudinary upload error:', error);
-    
-    // Send a more informative error message to the frontend
+
+    // Avoid exposing provider/internal details to clients.
     res.status(500).json({ 
-        message: 'Error uploading image.',
-        error: error.message || 'An unknown error occurred'
+        message: 'Error uploading image.'
     });
   }
 };

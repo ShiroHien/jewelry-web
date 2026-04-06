@@ -3,12 +3,14 @@ import bcrypt from 'bcryptjs';
 
 export interface IUser extends Document {
   email: string;
+  role: 'admin' | 'user';
   password?: string; // Optional because we don't return it in responses
   comparePassword(password: string): Promise<boolean>;
 }
 
 const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
+  role: { type: String, enum: ['admin', 'user'], default: 'user', required: true },
   password: { type: String, required: true, select: false }, // `select: false` prevents password from being sent in queries by default
 });
 
