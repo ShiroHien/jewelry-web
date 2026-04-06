@@ -98,13 +98,13 @@ const ProductPage: React.FC = () => {
   return (
     <div className="bg-stone-50">
         <div className="container mx-auto px-6 py-12 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-start">
           {/* Image Gallery */}
-          <div className="flex flex-col-reverse md:flex-row gap-3 lg:gap-5 sticky top-24 justify-center md:justify-start">
-            <div className="w-20 flex flex-col items-center md:items-start gap-2 h-[320px] md:h-[640px]">
+          <div className="flex flex-col gap-4 lg:flex-row lg:gap-5 lg:sticky lg:top-24 justify-center lg:justify-start">
+            <div className="order-2 lg:order-1 w-full lg:w-20 flex lg:flex-col items-stretch lg:items-center gap-2 lg:h-[640px] lg:overflow-hidden pb-1 lg:pb-0">
               <button
                 onClick={() => thumbnailsRef.current?.scrollBy({ top: -80, behavior: 'smooth' })}
-                className="hidden md:flex h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
+                className="hidden lg:flex shrink-0 h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
                 aria-label="Previous image"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,12 +112,12 @@ const ProductPage: React.FC = () => {
                 </svg>
               </button>
 
-              <div ref={thumbnailsRef} className="flex md:flex-col gap-2 overflow-hidden flex-1">
+              <div ref={thumbnailsRef} className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden flex-1 min-h-0 scrollbar-hide pb-1 lg:pb-0">
                 {product.images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(img)}
-                    className={`w-20 h-20 flex-shrink-0 cursor-pointer border-2 ${activeImage === img ? 'border-black' : 'border-transparent'}`}
+                    className={`w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 cursor-pointer border-2 rounded-md overflow-hidden ${activeImage === img ? 'border-black' : 'border-transparent'}`}
                     aria-label={`Product thumbnail ${index + 1}`}
                   >
                     <img src={img} alt={`${product.name} thumbnail ${index + 1}`} className="w-full h-full object-cover" />
@@ -127,7 +127,7 @@ const ProductPage: React.FC = () => {
 
               <button
                 onClick={() => thumbnailsRef.current?.scrollBy({ top: 80, behavior: 'smooth' })}
-                className="hidden md:flex h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
+                className="hidden lg:flex shrink-0 h-8 w-full items-center justify-center bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg shadow-sm"
                 aria-label="Next image"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -136,7 +136,7 @@ const ProductPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="w-full md:max-w-[640px] h-[320px] md:h-[640px] cursor-pointer bg-stone-200 mx-auto md:mx-0" onClick={() => setIsModalOpen(true)}>
+            <div className="order-1 lg:order-2 w-full lg:max-w-[640px] aspect-square lg:h-[640px] cursor-pointer bg-stone-200 mx-auto lg:mx-0 rounded-2xl overflow-hidden" onClick={() => setIsModalOpen(true)}>
               <img src={activeImage} alt={product.name} className="w-full h-full object-contain" />
             </div>
           </div>
@@ -239,6 +239,17 @@ const ProductPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      <style>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 };
